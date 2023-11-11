@@ -1,4 +1,5 @@
 # Sorting-script
+
 import os
 import shutil
 import send2trash
@@ -57,7 +58,7 @@ mapping = {
     '.cs': '/home/klaudiusz/Desktop/c_sharp',
     '.vb': '/home/klaudiusz/Desktop/visual_basic',
 }
-
+# Definition and instruction for files how they navigate to dirrection
 for directory in mapping.values():
     if not directory.endswith("trash") and not os.path.exists(directory):
         os.makedirs(directory)
@@ -83,7 +84,7 @@ def sorting():
                 os.rmdir(dir_path)
                 print(f"Folder {dir_path} has been deleted.")
 
-# Funkcja do uruchamiania jako demona
+# Deamon function
 def run_as_daemon():
     with daemon.DaemonContext():
         while True:
