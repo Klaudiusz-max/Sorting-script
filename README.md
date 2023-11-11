@@ -4,11 +4,12 @@ import os
 import shutil
 import send2trash
 import daemon
+import time
 
 desktop = '/home/klaudiusz/Desktop'
 
 mapping = {
-    '.pdf': '/home/klaudiusz/Desktop/pdf',
+       '.pdf': '/home/klaudiusz/Desktop/pdf',
     '.txt': '/home/klaudiusz/Desktop/txt',
     '.jpg': '/home/klaudiusz/Desktop/jpg',
     '.py': '/home/klaudiusz/Desktop/projekty',
@@ -58,12 +59,14 @@ mapping = {
     '.cs': '/home/klaudiusz/Desktop/c_sharp',
     '.vb': '/home/klaudiusz/Desktop/visual_basic',
 }
-# Definition and instruction for files how they navigate to dirrection
+
+# Create directories based on the mapping
 for directory in mapping.values():
     if not directory.endswith("trash") and not os.path.exists(directory):
         os.makedirs(directory)
 
 def sorting():
+    # Move files based on their extensions
     for filename in os.listdir(desktop):
         source_file_path = os.path.join(desktop, filename)
         if os.path.isfile(source_file_path):
@@ -77,6 +80,7 @@ def sorting():
                     shutil.move(source_file_path, os.path.join(destination_directory, filename))
                     print(f"File {filename} has been moved to {destination_directory}/")
 
+    # Remove empty directories
     for root, directories, files in os.walk(desktop, topdown=False):
         for directory in directories:
             dir_path = os.path.join(root, directory)
@@ -84,7 +88,7 @@ def sorting():
                 os.rmdir(dir_path)
                 print(f"Folder {dir_path} has been deleted.")
 
-# Deamon function
+# Daemon function
 def run_as_daemon():
     with daemon.DaemonContext():
         while True:
@@ -93,4 +97,3 @@ def run_as_daemon():
 
 if __name__ == '__main__':
     run_as_daemon()
-
